@@ -1,0 +1,6 @@
+name: Freshmail
+type: module
+description: Freshmail mailing system
+package: Freshmail
+core: 8.x
+configure: freshmail.settings

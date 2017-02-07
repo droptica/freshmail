@@ -1,0 +1,30 @@
+<?php
+
+namespace Drupal\freshmail\Controller;
+
+/**
+ * Class FreshmailController
+ * @package Drupal\freshmail\Controller
+ */
+class FreshmailController extends \Drupal\Core\Controller\ControllerBase {
+
+  function __construct() {
+    $this->config = $this->config('freshmail.settings');
+  }
+
+  public function addSubscriber($email, $hash_list = '') {
+
+    if (empty($hash_list)) {
+      $hash_list = $this->config->get('freshmail_list_id');
+    }
+    $method = 'subscriber/add/';
+    $options = array(
+      'email' => $email,
+      'list' => $hash_list,
+    );
+
+    $request = new FreshmailRestController();
+    $request->doRequest($method, $options);
+    return $request->getResponse();
+  }
+}

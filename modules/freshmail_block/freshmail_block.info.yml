@@ -1,0 +1,6 @@
+name: Freshmail Block
+type: module
+description: Freshmail block mailing system
+package: Freshmail
+core: 8.x
+dependencies: freshmail
