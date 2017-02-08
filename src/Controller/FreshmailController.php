@@ -6,14 +6,25 @@ use Drupal\Core\Controller\ControllerBase;
 
 /**
  * Class FreshmailController
+ *
  * @package Drupal\freshmail\Controller
  */
 class FreshmailController extends ControllerBase {
 
+  protected $config;
+
+  /**
+   * FreshmailController constructor.
+   */
   function __construct() {
     $this->config = $this->config('freshmail.settings');
   }
 
+  /**
+   * @param $email
+   * @param string $hash_list
+   * @return array
+   */
   public function addSubscriber($email, $hash_list = '') {
 
     if (empty($hash_list)) {
@@ -29,4 +40,5 @@ class FreshmailController extends ControllerBase {
     $request->doRequest($method, $options);
     return $request->getResponse();
   }
+
 }

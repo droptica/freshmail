@@ -11,7 +11,6 @@ use Drupal\Core\Controller\ControllerBase;
  * Class FreshmailRestController
  *
  * @package Drupal\freshmail\Controller
- *
  */
 class FreshmailRestController extends ControllerBase {
 
@@ -22,7 +21,11 @@ class FreshmailRestController extends ControllerBase {
   private $rawResponse = NULL;
   private $httpCode = NULL;
   private $contentType = 'application/json';
+  protected $config;
 
+  /**
+   * FreshmailRestController constructor.
+   */
   function __construct() {
     $this->config = $this->config('freshmail.settings');
   }
@@ -61,11 +64,21 @@ class FreshmailRestController extends ControllerBase {
     return $this->httpCode;
   }
 
+  /**
+   * @param string $contentType
+   * @return $this
+   */
   public function setContentType($contentType = '') {
     $this->contentType = $contentType;
     return $this;
   }
 
+  /**
+   * @param $strUrl
+   * @param array $arrParams
+   * @param bool $boolRawResponse
+   * @return mixed|null
+   */
   public function doRequest($strUrl, $arrParams = array(), $boolRawResponse = FALSE) {
     if (empty($arrParams)) {
       $strPostData = '';
@@ -113,7 +126,10 @@ class FreshmailRestController extends ControllerBase {
     return $this->response;
   }
 
-
+  /**
+   * @param $resCurl
+   * @return array|mixed|null
+   */
   private function _getResponseFromHeaders($resCurl) {
     $header_size = curl_getinfo($resCurl, CURLINFO_HEADER_SIZE);
     $header = substr($this->rawResponse, 0, $header_size);
@@ -130,4 +146,5 @@ class FreshmailRestController extends ControllerBase {
     }
     return $this->response;
   }
+  
 }

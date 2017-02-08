@@ -111,5 +111,5 @@ class FreshmailBlock extends BlockBase implements ContainerFactoryPluginInterfac
       'freshmail_form' => $form,
     );
   }
-  
+
 }

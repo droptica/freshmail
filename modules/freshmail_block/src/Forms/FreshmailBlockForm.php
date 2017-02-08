@@ -8,7 +8,6 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\freshmail\Controller\FreshmailController;
 
-
 /**
  * Freshmail configuration form
  */
