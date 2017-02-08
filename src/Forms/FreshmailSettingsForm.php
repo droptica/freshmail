@@ -6,11 +6,13 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Freshmail configuration form
+ * Class FreshmailSettingsForm.
+ *
+ * Provides the add form to add settings freshmail.
+ *
+ * @ingroup freshmail
  */
 class FreshmailSettingsForm extends ConfigFormBase {
-
-
 
   /**
    * {@inheritdoc}

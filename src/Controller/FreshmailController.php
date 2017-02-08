@@ -2,11 +2,13 @@
 
 namespace Drupal\freshmail\Controller;
 
+use Drupal\Core\Controller\ControllerBase;
+
 /**
  * Class FreshmailController
  * @package Drupal\freshmail\Controller
  */
-class FreshmailController extends \Drupal\Core\Controller\ControllerBase {
+class FreshmailController extends ControllerBase {
 
   function __construct() {
     $this->config = $this->config('freshmail.settings');
