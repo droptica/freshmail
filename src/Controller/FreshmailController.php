@@ -5,7 +5,7 @@ namespace Drupal\freshmail\Controller;
 use Drupal\Core\Controller\ControllerBase;
 
 /**
- * Class FreshmailController
+ * Class FreshmailController.
  *
  * @package Drupal\freshmail\Controller
  */

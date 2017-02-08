@@ -6,7 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 
 /**
  * Class use to connection with freshmail API.
- * Based on class get form https://github.com/FreshMail/REST-API.
+ * Based on class get form https://github.com/FreshMail/REST-API .
  *
  * Class FreshmailRestController
  *

@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\freshmail\Controller\FreshmailController;
 
 /**
- * Freshmail configuration form
+ * Freshmail configuration form.
  */
 class FreshmailBlockForm extends FormBase {
 
