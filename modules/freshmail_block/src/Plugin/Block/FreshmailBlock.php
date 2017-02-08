@@ -23,7 +23,7 @@ class FreshmailBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *
    * @var \Drupal\Core\Form\FormBuilderInterface
    */
-  protected $form_builder;
+  protected $formBuilder;
 
   /**
    * Constructs a new RedirectFormBlock.
@@ -37,11 +37,10 @@ class FreshmailBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
    *   The form builder.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $form_builder)
-  {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $form_builder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
-    $this->form_builder = $form_builder;
+    $this->formBuilder = $form_builder;
   }
 
   /**
@@ -100,7 +99,7 @@ class FreshmailBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function build() {
-    $form = $this->form_builder->getForm('Drupal\freshmail_block\Forms\FreshmailBlockForm');
+    $form = $this->formBuilder->getForm('Drupal\freshmail_block\Forms\FreshmailBlockForm');
     if (isset($this->configuration['freshmail_block_label_value'])) {
       $form['email']['#title'] = $this->configuration['freshmail_block_label_value'];
     }
@@ -112,4 +111,5 @@ class FreshmailBlock extends BlockBase implements ContainerFactoryPluginInterfac
       'freshmail_form' => $form,
     );
   }
+  
 }
