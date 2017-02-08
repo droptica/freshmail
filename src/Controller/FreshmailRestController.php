@@ -21,6 +21,7 @@ class FreshmailRestController extends ControllerBase {
   private $rawResponse = NULL;
   private $httpCode = NULL;
   private $contentType = 'application/json';
+
   protected $config;
 
   /**
@@ -31,9 +32,7 @@ class FreshmailRestController extends ControllerBase {
   }
 
   /**
-   * Get Errors.
-   *
-   * @return array
+   * {@inheritdoc}
    */
   public function getErrors() {
     if (isset($this->errors['errors'])) {
@@ -44,21 +43,21 @@ class FreshmailRestController extends ControllerBase {
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public function getResponse() {
     return $this->response;
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public function getRawResponse() {
     return $this->rawResponse;
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public function getHttpCode() {
     return $this->httpCode;
@@ -126,8 +125,8 @@ class FreshmailRestController extends ControllerBase {
   private function getResponseFromHeaders($resCurl) {
     $header_size = curl_getinfo($resCurl, CURLINFO_HEADER_SIZE);
     $header = substr($this->rawResponse, 0, $header_size);
-    $TypePatern = '/Content-Type:\s*([a-z-Z\/]*)\s/';
-    preg_match($TypePatern, $header, $responseType);
+    $typePatern = '/Content-Type:\s*([a-z-Z\/]*)\s/';
+    preg_match($typePatern, $header, $responseType);
     if (strtolower($responseType[1]) == 'application/zip') {
       $filePatern = '/filename\=\"([a-zA-Z0-9\.]+)\"/';
       preg_match($filePatern, $header, $fileName);
