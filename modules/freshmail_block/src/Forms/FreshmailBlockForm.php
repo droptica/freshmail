@@ -34,21 +34,20 @@ class FreshmailBlockForm extends FormBase {
     );
     $form['email'] = array(
       '#type' => 'email',
-      '#title' => $this->t('Email'),
-      '#default_value' => \Drupal::currentUser()
-        ->getEmail() ? \Drupal::currentUser()->getEmail() : '',
+      '#title' => t('Email'),
+      '#default_value' => $this->currentUser()->getEmail() ? $this->currentUser()->getEmail() : '',
     );
-
-    $form['submit'] = array(
-      '#type' => 'button',
+    $form['actions']['submit'] = array(
+      '#type' => 'submit',
       '#value' => 'Save',
       '#ajax' => array(
         'callback' => '::submitFormAjaxCallback',
         'event' => 'click',
         'progress' => array(
           'type' => 'throbber',
-          'message' => $this->t('Adding E-mail...'),
+          'message' => 'Getting Random Username',
         ),
+
       ),
     );
     return $form;
@@ -60,7 +59,7 @@ class FreshmailBlockForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     $inputs = $form_state->getUserInput();
-    if (isset($inputs['_drupal_ajax']) && ($inputs['_drupal_ajax'] == '1')) {
+    if ($inputs['_drupal_ajax'] == '1') {
       return;
     }
     else {
@@ -73,31 +72,25 @@ class FreshmailBlockForm extends FormBase {
   public function submitFormAjaxCallback(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
 
-    // Validation.
     if (!filter_var($form_state->getValue('email'), FILTER_VALIDATE_EMAIL)) {
-      $message = '<div id="freshmail-alert"><div class="messages messages--error">' . $this->t('Incorrect E-mail') . '</div></div>';
+      $message = '<div class="messages messages--error">' . t('Incorrect E-mail') . '</div>';
       return $response->addCommand(new ReplaceCommand('#freshmail-alert', $message));
     }
 
-    // Submit.
+
     $request = new FreshmailController();
     $freshmail_response = $request->addSubscriber($form_state->getValue('email'));
 
     if ($freshmail_response['status'] == 'OK') {
-      $message = '<div class="messages messages--status">' . $this->t('E-mail added to list') . '</div></div>';
+      $message = '<div class="messages messages--status">' . t('E-mail add to list') . '</div>';
       return $response->addCommand(new ReplaceCommand('#freshmail-block-form', $message));
     }
-
-
-    if (isset($freshmail_response['errors'][0]['message'])) {
-      $message = $this->t($freshmail_response['errors'][0]['message']);
-    }
     else {
-      $message = $this->t('Freshmail error - please contact with administrator');
+      if(isset($freshmail_response['errors'][0]['message'])) {
+        $message = '<div class="messages messages--error">' . t($freshmail_response['errors'][0]['message']) . '</div>';
+        return $response->addCommand(new ReplaceCommand('#freshmail-alert', $message));
+      }
     }
-
-    $message = '<div id="freshmail-alert"><div class="messages messages--error">' . $message . '</div></div>';
-    return $response->addCommand(new ReplaceCommand('#freshmail-alert', $message));
   }
 
   /**
@@ -105,6 +98,16 @@ class FreshmailBlockForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
+    $request = new FreshmailController();
+    $freshmail_response = $request->addSubscriber($form_state->getValue('email'));
+
+    if ($freshmail_response['status'] == 'OK') {
+      drupal_set_message(t('E-mail add to list'));
+      $form_state->setRebuild();
+    }
+    else {
+      drupal_set_message(t($freshmail_response['errors'][0]['message']), 'error');
+    }
   }
 
   /**

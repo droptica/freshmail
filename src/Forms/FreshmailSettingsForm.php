@@ -5,11 +5,12 @@ namespace Drupal\freshmail\Forms;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-
 /**
  * Freshmail configuration form
  */
 class FreshmailSettingsForm extends ConfigFormBase {
+
+
 
   /**
    * {@inheritdoc}
@@ -37,21 +38,21 @@ class FreshmailSettingsForm extends ConfigFormBase {
     $form['freshmail_list_id'] = array(
       '#type' => 'textfield',
       '#group' => 'config',
-      '#title' => t('List id'),
+      '#title' => $this->t('List id'),
       '#default_value' => $config->get('freshmail_list_id'),
     );
 
     $form['freshmail_api_key'] = array(
       '#type' => 'textfield',
       '#group' => 'config',
-      '#title' => t('API Key'),
+      '#title' => $this->t('API Key'),
       '#default_value' => $config->get('freshmail_api_key'),
     );
 
     $form['freshmail_api_secret_key'] = array(
       '#type' => 'textfield',
       '#group' => 'config',
-      '#title' => t('Secret API Key'),
+      '#title' => $this->t('Secret API Key'),
       '#default_value' => $config->get('freshmail_api_secret_key'),
     );
 
@@ -62,7 +63,7 @@ class FreshmailSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // TODO
+    // TODO.
   }
 
   /**
@@ -70,11 +71,12 @@ class FreshmailSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-    $config = \Drupal::service('config.factory')->getEditable('freshmail.settings');
+    $config = $this->config('freshmail.settings');
     $config->set('freshmail_api_key', $form_state->getValue('freshmail_api_key'))->save();
     $config->set('freshmail_api_secret_key', $form_state->getValue('freshmail_api_secret_key'))->save();
     $config->set('freshmail_list_id', $form_state->getValue('freshmail_list_id'))->save();
 
     parent::submitForm($form, $form_state);
   }
+
 }

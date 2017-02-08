@@ -2,18 +2,22 @@
 
 namespace Drupal\freshmail\Controller;
 
+use Drupal\Core\Controller\ControllerBase;
+
 /**
  * Class use to connection with freshmail API.
  * Based on class get form https://github.com/FreshMail/REST-API.
  *
  * Class FreshmailRestController
+ *
  * @package Drupal\freshmail\Controller
+ *
  */
-class FreshmailRestController extends \Drupal\Core\Controller\ControllerBase {
+class FreshmailRestController extends ControllerBase {
 
-  const host = 'https://api.freshmail.com/';
-  const prefix = 'rest/';
-  const defaultFilePath = '/tmp/';
+  const HOST = 'https://api.freshmail.com/';
+  const PREFIX = 'rest/';
+  const DEFAULTFILEPATH = '/tmp/';
   private $response = NULL;
   private $rawResponse = NULL;
   private $httpCode = NULL;
@@ -104,6 +108,7 @@ class FreshmailRestController extends \Drupal\Core\Controller\ControllerBase {
     }
 
     $this->_getResponseFromHeaders($resCurl);
+    $this->errors = $this->response['errors'];
 
     return $this->response;
   }
