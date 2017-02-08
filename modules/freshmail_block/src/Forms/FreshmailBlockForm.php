@@ -68,6 +68,9 @@ class FreshmailBlockForm extends FormBase {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitFormAjaxCallback(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
 
@@ -75,8 +78,6 @@ class FreshmailBlockForm extends FormBase {
       $message = '<div class="messages messages--error">' . $this->t('Incorrect E-mail') . '</div>';
       return $response->addCommand(new ReplaceCommand('#freshmail-alert', $message));
     }
-
-
     $request = new FreshmailController();
     $freshmail_response = $request->addSubscriber($form_state->getValue('email'));
 
@@ -85,7 +86,7 @@ class FreshmailBlockForm extends FormBase {
       return $response->addCommand(new ReplaceCommand('#freshmail-block-form', $message));
     }
     else {
-      if(isset($freshmail_response['errors'][0]['message'])) {
+      if (isset($freshmail_response['errors'][0]['message'])) {
         $message = '<div class="messages messages--error">' . $this->t($freshmail_response['errors'][0]['message']) . '</div>';
         return $response->addCommand(new ReplaceCommand('#freshmail-alert', $message));
       }
@@ -117,4 +118,5 @@ class FreshmailBlockForm extends FormBase {
       'freshmail.block',
     ];
   }
+
 }

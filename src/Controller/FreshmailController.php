@@ -21,9 +21,7 @@ class FreshmailController extends ControllerBase {
   }
 
   /**
-   * @param $email
-   * @param string $hash_list
-   * @return array
+   * {@inheritdoc}
    */
   public function addSubscriber($email, $hash_list = '') {
 

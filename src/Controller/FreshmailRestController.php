@@ -65,8 +65,7 @@ class FreshmailRestController extends ControllerBase {
   }
 
   /**
-   * @param string $contentType
-   * @return $this
+   * {@inheritdoc}
    */
   public function setContentType($contentType = '') {
     $this->contentType = $contentType;
@@ -74,10 +73,7 @@ class FreshmailRestController extends ControllerBase {
   }
 
   /**
-   * @param $strUrl
-   * @param array $arrParams
-   * @param bool $boolRawResponse
-   * @return mixed|null
+   * {@inheritdoc}
    */
   public function doRequest($strUrl, $arrParams = array(), $boolRawResponse = FALSE) {
     if (empty($arrParams)) {
@@ -93,8 +89,6 @@ class FreshmailRestController extends ControllerBase {
     $api_key = $this->config->get('freshmail_api_key');
     $api_secret = $this->config->get('freshmail_api_secret_key');
     $strSign = sha1($api_key . '/' . self::prefix . $strUrl . $strPostData . $api_secret);
-
-
     $arrHeaders = array();
     $arrHeaders[] = 'X-Rest-ApiKey: ' . $api_key;
     $arrHeaders[] = 'X-Rest-ApiSign: ' . $strSign;
@@ -120,17 +114,16 @@ class FreshmailRestController extends ControllerBase {
       return $this->rawResponse;
     }
 
-    $this->_getResponseFromHeaders($resCurl);
+    $this->getResponseFromHeaders($resCurl);
     $this->errors = $this->response['errors'];
 
     return $this->response;
   }
 
   /**
-   * @param $resCurl
-   * @return array|mixed|null
+   * {@inheritdoc}
    */
-  private function _getResponseFromHeaders($resCurl) {
+  private function getResponseFromHeaders($resCurl) {
     $header_size = curl_getinfo($resCurl, CURLINFO_HEADER_SIZE);
     $header = substr($this->rawResponse, 0, $header_size);
     $TypePatern = '/Content-Type:\s*([a-z-Z\/]*)\s/';
@@ -146,5 +139,5 @@ class FreshmailRestController extends ControllerBase {
     }
     return $this->response;
   }
-  
+
 }
