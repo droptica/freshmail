@@ -2,31 +2,37 @@
 
 namespace Drupal\freshmail\Controller;
 
+use Drupal\Core\Controller\ControllerBase;
+
 /**
  * Class use to connection with freshmail API.
- * Based on class get form https://github.com/FreshMail/REST-API.
+ * Based on class get form https://github.com/FreshMail/REST-API .
  *
  * Class FreshmailRestController
+ *
  * @package Drupal\freshmail\Controller
  */
-class FreshmailRestController extends \Drupal\Core\Controller\ControllerBase {
+class FreshmailRestController extends ControllerBase {
 
-  const host = 'https://api.freshmail.com/';
-  const prefix = 'rest/';
-  const defaultFilePath = '/tmp/';
+  const HOST = 'https://api.freshmail.com/';
+  const PREFIX = 'rest/';
+  const DEFAULTFILEPATH = '/tmp/';
   private $response = NULL;
   private $rawResponse = NULL;
   private $httpCode = NULL;
   private $contentType = 'application/json';
 
+  protected $config;
+
+  /**
+   * FreshmailRestController constructor.
+   */
   function __construct() {
     $this->config = $this->config('freshmail.settings');
   }
 
   /**
-   * Get Errors.
-   *
-   * @return array
+   * {@inheritdoc}
    */
   public function getErrors() {
     if (isset($this->errors['errors'])) {
@@ -37,31 +43,37 @@ class FreshmailRestController extends \Drupal\Core\Controller\ControllerBase {
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public function getResponse() {
     return $this->response;
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public function getRawResponse() {
     return $this->rawResponse;
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public function getHttpCode() {
     return $this->httpCode;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setContentType($contentType = '') {
     $this->contentType = $contentType;
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function doRequest($strUrl, $arrParams = array(), $boolRawResponse = FALSE) {
     if (empty($arrParams)) {
       $strPostData = '';
@@ -76,8 +88,6 @@ class FreshmailRestController extends \Drupal\Core\Controller\ControllerBase {
     $api_key = $this->config->get('freshmail_api_key');
     $api_secret = $this->config->get('freshmail_api_secret_key');
     $strSign = sha1($api_key . '/' . self::prefix . $strUrl . $strPostData . $api_secret);
-
-
     $arrHeaders = array();
     $arrHeaders[] = 'X-Rest-ApiKey: ' . $api_key;
     $arrHeaders[] = 'X-Rest-ApiSign: ' . $strSign;
@@ -103,17 +113,20 @@ class FreshmailRestController extends \Drupal\Core\Controller\ControllerBase {
       return $this->rawResponse;
     }
 
-    $this->_getResponseFromHeaders($resCurl);
+    $this->getResponseFromHeaders($resCurl);
+    $this->errors = $this->response['errors'];
 
     return $this->response;
   }
 
-
-  private function _getResponseFromHeaders($resCurl) {
+  /**
+   * {@inheritdoc}
+   */
+  private function getResponseFromHeaders($resCurl) {
     $header_size = curl_getinfo($resCurl, CURLINFO_HEADER_SIZE);
     $header = substr($this->rawResponse, 0, $header_size);
-    $TypePatern = '/Content-Type:\s*([a-z-Z\/]*)\s/';
-    preg_match($TypePatern, $header, $responseType);
+    $typePatern = '/Content-Type:\s*([a-z-Z\/]*)\s/';
+    preg_match($typePatern, $header, $responseType);
     if (strtolower($responseType[1]) == 'application/zip') {
       $filePatern = '/filename\=\"([a-zA-Z0-9\.]+)\"/';
       preg_match($filePatern, $header, $fileName);
@@ -125,4 +138,5 @@ class FreshmailRestController extends \Drupal\Core\Controller\ControllerBase {
     }
     return $this->response;
   }
+
 }

@@ -6,9 +6,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\freshmail\Controller\FreshmailController;
 
-
 /**
- * Freshmail configuration form
+ * Freshmail configuration form.
  */
 class FreshmailBlockForm extends FormBase {
 
@@ -33,15 +32,12 @@ class FreshmailBlockForm extends FormBase {
     $form['email'] = array(
       '#type' => 'email',
       '#title' => $this->t('Email'),
-      '#default_value' => \Drupal::currentUser()
-        ->getEmail() ? \Drupal::currentUser()->getEmail() : '',
+      '#default_value' => $this->currentUser()->getEmail() ? $this->currentUser()->getEmail() : '',
     );
 
-    $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = array(
       '#type' => 'submit',
       '#value' => $this->t('Save'),
-      '#button_type' => 'primary',
     );
 
     return $form;
@@ -51,10 +47,11 @@ class FreshmailBlockForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-      if (!filter_var($form_state->getValue('email'), FILTER_VALIDATE_EMAIL)) {
-        $form_state->setErrorByName('email', $this->t('Invalid e-mail'));
+    if (!filter_var($form_state->getValue('email'), FILTER_VALIDATE_EMAIL)) {
+      $form_state->setErrorByName('email', $this->t('Invalid e-mail'));
     }
   }
+
 
   /**
    * {@inheritdoc}
@@ -65,15 +62,11 @@ class FreshmailBlockForm extends FormBase {
     $freshmail_response = $request->addSubscriber($form_state->getValue('email'));
 
     if ($freshmail_response['status'] == 'OK') {
-      drupal_set_message(t('E-mail added to list'));
-      return;
-    }
-
-    if (isset($freshmail_response['errors'][0]['message'])) {
-      drupal_set_message(t($freshmail_response['errors'][0]['message']), 'error');
+      drupal_set_message($this->t('E-mail add to list'));
+      $form_state->setRebuild();
     }
     else {
-      drupal_set_message(t('Unknown error'), 'error');
+      drupal_set_message($this->t($freshmail_response['errors'][0]['message']), 'error');
     }
   }
 
