@@ -14,15 +14,8 @@ function freshmail_requirements($phase) {
     $list_id = $config->get('freshmail_list_id');
 
     if (empty($api) || empty($api_secret_k) ||  empty($list_id)) {
-
-      $config_link =  [
-        '#title' => t('Go to config page'),
-        '#type' => 'link',
-        '#url' => Url::fromRoute('freshmail.settings'),
-      ];
-
       $requirements['freshmail']['title'] = 'Freshmail';
-      $requirements['freshmail']['description'] = t('Freshmail Settings are not set').' '.render($config_link);
+      $requirements['freshmail']['description'] = t('Freshmail Settings are not set. Go to config page <a href=":freshmail_settings">Freshmail</a>.', array(':freshmail_settings' => Url::fromRoute('freshmail.settings'),('freshmail.settings')));
       $requirements['freshmail']['severity'] = REQUIREMENT_ERROR;
     }
     else {
