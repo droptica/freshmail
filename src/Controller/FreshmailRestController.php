@@ -87,7 +87,7 @@ class FreshmailRestController extends ControllerBase {
 
     $api_key = $this->config->get('freshmail_api_key');
     $api_secret = $this->config->get('freshmail_api_secret_key');
-    $strSign = sha1($api_key . '/' . self::prefix . $strUrl . $strPostData . $api_secret);
+    $strSign = sha1($api_key . '/' . self::PREFIX . $strUrl . $strPostData . $api_secret);
     $arrHeaders = array();
     $arrHeaders[] = 'X-Rest-ApiKey: ' . $api_key;
     $arrHeaders[] = 'X-Rest-ApiSign: ' . $strSign;
@@ -96,7 +96,7 @@ class FreshmailRestController extends ControllerBase {
       $arrHeaders[] = 'Content-Type: ' . $this->contentType;
     }
 
-    $resCurl = curl_init(self::host . self::prefix . $strUrl);
+    $resCurl = curl_init(self::HOST . self::PREFIX . $strUrl);
     curl_setopt($resCurl, CURLOPT_HTTPHEADER, $arrHeaders);
     curl_setopt($resCurl, CURLOPT_HEADER, TRUE);
     curl_setopt($resCurl, CURLOPT_RETURNTRANSFER, TRUE);
