@@ -77,5 +77,5 @@ class FreshmailBlockForm extends FormBase {
       'freshmail.block',
     ];
   }
-  
+
 }
