@@ -1,6 +1,11 @@
 <?php
+/**
+ * @file
+ * Installation hooks for freshmail module.
+ */
 
 use \Drupal\Core\Url;
+
 /**
  * Implements hook_requirements().
  */

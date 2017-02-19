@@ -52,7 +52,6 @@ class FreshmailBlockForm extends FormBase {
     }
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -78,4 +77,5 @@ class FreshmailBlockForm extends FormBase {
       'freshmail.block',
     ];
   }
+  
 }

@@ -16,7 +16,7 @@ class FreshmailController extends ControllerBase {
   /**
    * FreshmailController constructor.
    */
-  function __construct() {
+  public function __construct() {
     $this->config = $this->config('freshmail.settings');
   }
 
