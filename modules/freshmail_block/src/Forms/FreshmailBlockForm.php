@@ -65,7 +65,7 @@ class FreshmailBlockForm extends FormBase {
       $form_state->setRebuild();
     }
     else {
-      drupal_set_message($this->t('Error while connecting to Freshmail API: @error', ['@error' => $freshmail_response['errors'][0]['message']]), 'error');
+      drupal_set_message($this->t('Freshmail API error: @error', ['@error' => $freshmail_response['errors'][0]['message']]), 'error');
     }
   }
 
