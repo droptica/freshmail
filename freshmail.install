@@ -5,7 +5,7 @@
  * Installation hooks for freshmail module.
  */
 
-use \Drupal\Core\Url;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_requirements().
@@ -21,7 +21,7 @@ function freshmail_requirements($phase) {
 
     if (empty($api) || empty($api_secret_k) ||  empty($list_id)) {
       $requirements['freshmail']['title'] = 'Freshmail';
-      $requirements['freshmail']['description'] = t('Freshmail Settings are not set. Go to config page <a href=":freshmail_settings">Freshmail</a>', array(':freshmail_settings' => Url::fromRoute('freshmail.settings'),('freshmail.settings')));
+      $requirements['freshmail']['description'] = t('Freshmail Settings are not set. Go to config page <a href=":freshmail_settings">Freshmail</a>', array(':freshmail_settings' => Url::fromRoute('freshmail.settings'), ('freshmail.settings')));
       $requirements['freshmail']['severity'] = REQUIREMENT_ERROR;
     }
     else {
